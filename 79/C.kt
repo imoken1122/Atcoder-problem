@@ -1,28 +1,14 @@
 fun main(args: Array<String>) {
     var N = readLine()!!.toList().map(Char::toString).map(String::toInt)
-    var l:MutableList<Int> = mutableListOf()
-    var op:List<Char> = listOf('+','-','+','-')
-    for(i in 0..3 step 2){
-      l.add(N[i] + N[i+1])
-      l.add(N[i] - N[i+1])
-    }
-    
-    for(i in 0..1){
-        for(j in 2..3){
-            var ans1=l[i]+l[j]
-            var ans2=l[i]-l[j]
-            
-            if(ans1 == 7){
-                println("${N[0]}${op[i]}${N[1]}+${N[2]}${op[j]}${N[3]}=7")
-                return
-            }
-            if(ans2 == 7){
-                println("${N[0]}${op[i]}${N[1]}-${N[2]}${op[j]}${N[3]}=7")
-                return
-            }
-            
+    //符号の24通りの組み合わせ生成
+    0.until(8).map { n->
+        0.until(3).map { i->
+            if((n and (1 shl i)) != 0) {1} else {-1}
+         }
+        }.filter{N[0]+ it[0]*N[1]+it[1]*N[2]+it[2]*N[3] == 7}[0].let{
+            var op = it.map{x-> when(x){ -1-> {'-'} else -> {'+'}}}
+            println("${N[0]}${op[0]}${N[1]}${op[1]}${N[2]}${op[2]}${N[3]}=7")
         }
-    }
-    
+
 }
 
